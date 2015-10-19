@@ -1,6 +1,8 @@
 # fivetwelve – DMX512 light control library
 
-| ***NOTE:** this documentation is work-in-progress.*
+[![Build Status](https://travis-ci.org/beyondscreen/fivetwelve.svg?branch=master)](https://travis-ci.org/beyondscreen/fivetwelve)
+
+| **NOTE:** this documentation is work-in-progress.
 
 The fivetwelve library provides abstractions to easily control professional light-equipment using the DMX512-protocol.
 
