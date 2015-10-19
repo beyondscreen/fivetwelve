@@ -1,8 +1,13 @@
 {
   "name": "fivetwelve",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "dmx512 lighting control library",
-  "keywords": ["dmx", "dmx512", "lighting", "light-control"],
+  "keywords": [
+    "dmx",
+    "dmx512",
+    "lighting",
+    "light-control"
+  ],
   "main": "index.js",
   "engines": {
     "node": ">= 0.10.x"
@@ -15,11 +20,11 @@
   "license": "MIT",
   "homepage": "https://github.com/beyondscreen/fivetwelve",
   "repository": {
-      "type": "git",
-      "url": "git+https://github.com/beyondscreen/fivetwelve"
+    "type": "git",
+    "url": "git+https://github.com/beyondscreen/fivetwelve"
   },
   "bugs": {
-      "url": "https://github.com/beyondscreen/fivetwelve/issues"
+    "url": "https://github.com/beyondscreen/fivetwelve/issues"
   },
   "dependencies": {
     "array.from": "^0.2.0",
