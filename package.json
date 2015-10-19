@@ -1,0 +1,25 @@
+{
+  "name": "fivetwelve",
+  "version": "0.1.0",
+  "description": "dmx512 library",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel/register test/{**/,}*Test.js",
+    "prepublish": "babel -d lib-es5 lib"
+  },
+  "author": "Martin Schuhfuss <m.schuhfuss@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "array.from": "^0.2.0",
+    "color-convert": "^0.6.0",
+    "lodash.assign": "^3.2.0",
+    "parse-color": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel": "^5.8.20",
+    "eslint": "^1.2.1",
+    "expect.js": "^0.3.1",
+    "mocha": "^2.2.5",
+    "sinon": "^1.15.4"
+  }
+}
