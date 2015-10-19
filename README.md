@@ -51,6 +51,32 @@ For the rest of the documentation ES6-Syntax is assumed.
 
 ### DmxOutput
 
+The `DMXOutput` is the owner of the dmx-buffer for a dmx-universe. Every device is connected to a single output-instance. It also manages frame-timing and communication with the actual DMX-interface.
+
+When creating an output-instance you need to specify a driver to use. As receiving dmx-data isn't implemented yet, the driver is really just an object that implements a send-method.
+
+The main function of the fivetwelve-library will just call the constructor of the DmxOutput.
+
+```javascript
+import fivetwelve from 'fivetwelve';
+
+// create a dummy-driver that doesn't do anything
+const driver = {
+  send(dmxBuffer) { return Promise.resolve(); }
+}
+
+// create an output using the specified driver
+const output = fivetwelve(driver);
+
+// start the output at 30 frames/second.
+output.start(30);
+```
+
+This way, the output will handle the timing automatically and you can just modify the buffer using the devices attached to the output and the changes will be sent automatically with the next frame.
+
+Alternatively you can decide to handle the timing yourself. In this case you need to call `output.send()` to send the current dmx-buffer to the driver.
+
+
 ### DmxDevice
 
 A DmxDevice represents a single lighting fixture in your setup. Devices are defined by specifying a device-address and a list of parameters. For example, a simple lamp that supports RGB color-mixing and brightness-control might be defined like this:
