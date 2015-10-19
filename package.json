@@ -1,7 +1,8 @@
 {
   "name": "fivetwelve",
   "version": "0.1.0",
-  "description": "dmx512 library",
+  "description": "dmx512 lighting control library",
+  "keywords": ["dmx", "dmx512", "lighting", "light-control"],
   "main": "index.js",
   "scripts": {
     "test": "mocha --compilers js:babel/register test/{**/,}*Test.js",
@@ -9,6 +10,14 @@
   },
   "author": "Martin Schuhfuss <m.schuhfuss@gmail.com>",
   "license": "MIT",
+  "homepage": "https://github.com/beyondscreen/fivetwelve",
+  "repository": {
+      "type": "git",
+      "url": "git+https://github.com/beyondscreen/fivetwelve"
+  },
+  "bugs": {
+      "url": "https://github.com/beyondscreen/fivetwelve/issues"
+  },
   "dependencies": {
     "array.from": "^0.2.0",
     "color-convert": "^0.6.0",
