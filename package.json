@@ -4,6 +4,9 @@
   "description": "dmx512 lighting control library",
   "keywords": ["dmx", "dmx512", "lighting", "light-control"],
   "main": "index.js",
+  "engines": {
+    "node": ">= 0.10.x"
+  },
   "scripts": {
     "test": "mocha --compilers js:babel/register test/{**/,}*Test.js",
     "prepublish": "babel -d lib-es5 lib"
