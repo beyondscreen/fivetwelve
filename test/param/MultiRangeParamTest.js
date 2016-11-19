@@ -150,5 +150,20 @@ describe('MultiRangeParam', () => {
       _getChannelValueStub.withArgs(11).returns(150);
       expect(param.getValue(device)).to.eql('fn(25)');
     });
+
+    it('handles ranges with multi-param mapping-functions', () => {
+      const param = new MultiRangeParam(11, {
+        fn: {
+          range: [100, 200],
+          toDmx: (a, b) => 100 + a + b
+        }
+      });
+
+      param.setValue(device, 'fn(3, 5)');
+      expect(_setChannelValueSpy.firstCall.args).to.eql([11, 108]);
+
+      _getChannelValueStub.withArgs(11).returns(108);
+      expect(param.getValue(device)).to.eql('dmx(108)');
+    });
   });
 });
