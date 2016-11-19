@@ -115,5 +115,15 @@ describe('MultiRangeParam', () => {
       _getChannelValueStub.withArgs(42).returns(150);
       expect(param.getValue(device)).to.eql(50);
     });
+
+    it('handles the special dmx()-range', () => {
+      const param = new MultiRangeParam(13, {});
+
+      param.setValue(device, 'dmx(213)');
+      expect(_setChannelValueSpy.firstCall.args).to.eql([13, 213]);
+
+      _getChannelValueStub.withArgs(13).returns(123);
+      expect(param.getValue(device)).to.eql('dmx(123)');
+    });
   });
 });
