@@ -32,9 +32,9 @@ describe('MultiRangeParam', () => {
 
     beforeEach(() => {
       param = initTestParam(12, {
-        closed: {range: [0,6]},
-        open: {range: [7,13]},
-        strobe: {range: [14,100], values: [0, 1]},
+        closed: {range: [0, 6]},
+        open: {range: [7, 13]},
+        strobe: {range: [14, 100], values: [0, 1]},
         random: {range: [101, 201], values: [0, 1]},
         something: {range: [202, 222], values: [0, 40]}
       });
