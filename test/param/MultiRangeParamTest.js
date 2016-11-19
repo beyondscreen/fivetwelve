@@ -91,27 +91,29 @@ describe('MultiRangeParam', () => {
 
         _getChannelValueStub.withArgs(12).returns(151);
         expect(param.getValue(device)).to.be('random(0.5)');
+        // double check to make sure the cached code-path is covered
         expect(param.getValue(device)).to.be('random(0.5)');
       });
     });
   });
 
-  describe('default-range', () => {
-    describe('setValue()', () => {
-      it('handles default-ranges', () => {
-        const param = new MultiRangeParam(42, {
-          something: {range: [0, 100], values: [0, 100]},
-          default: {range: [100, 200], values: [0, 100]}
-        });
-
-        param.setValue(device, 'default(50)');
-        expect(_setChannelValueSpy.firstCall.args).to.eql([42, 150]);
-
-        _setChannelValueSpy.reset();
-
-        param.setValue(device, 50);
-        expect(_setChannelValueSpy.firstCall.args).to.eql([42, 150]);
+  describe('special ranges', () => {
+    it('handles default-ranges', () => {
+      const param = new MultiRangeParam(42, {
+        something: {range: [0, 100], values: [0, 100]},
+        default: {range: [100, 200], values: [0, 100]}
       });
+
+      param.setValue(device, 'default(50)');
+      expect(_setChannelValueSpy.firstCall.args).to.eql([42, 150]);
+
+      _setChannelValueSpy.reset();
+
+      param.setValue(device, 50);
+      expect(_setChannelValueSpy.firstCall.args).to.eql([42, 150]);
+
+      _getChannelValueStub.withArgs(42).returns(150);
+      expect(param.getValue(device)).to.eql(50);
     });
   });
 });
