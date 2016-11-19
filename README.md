@@ -28,13 +28,13 @@ import ArtNetDriver from 'fivetwelve-driver-artnet';
 
 // ...
 ```
-    
+
 Alternatively you can use the ES5-Version by appending `/es5` to the module-names:
 
 ```javascript
 var fivetwelve = require('fivetwelve/es5');
 var ArtNetDriver = require('fivetwelve-driver-artnet/es5');
-    
+
 // ...
 ```
 
@@ -45,9 +45,9 @@ For the rest of the documentation ES6-Syntax is assumed.
 
  * `DmxOutput`: owns the data-buffer for a single dmx-universe, manages the frame-timing for dmx-data and communication with the DMX-driver.
  * `DmxDevice`: provides a simple API to manipulate light-fixtures
- * `param.DmxParam`: the glue between logical-values used by your 
+ * `param.DmxParam`: the glue between logical-values used by your
      program and the corresponding DMX-values on the wire.
- * `DeviceGroup`: a collection of `DmxDevice` instances that exposes 
+ * `DeviceGroup`: a collection of `DmxDevice` instances that exposes
      an interface identical to the contained devices.
 
 
@@ -117,31 +117,31 @@ Parameters are exposed by the device using "magic"-properties with custom getter
 
 ```javascript
 import {DmxDevice, param} from 'fivetwelve';
-    
+
 let device = new fivetwelve.DmxDevice(1, {
   // a typical moving-head has a pan-range of 540° and tilt-range
   // of around 240° with 16-bit resolution. The 16 bits are spread
   // across 2 dmx-channels (in this case channels 3/4 and 5/6).
   pan: new param.HiResParam([3, 4], {min: -270, max: 270}),
   tilt: new param.HiResParam([5, 6], {min: -120, max: 120}),
-  
+
   // the dimmer uses single dmx-channel and is mapped to a range
   // from 0 to 1, which is the default.
   brightness: new param.RangeParam(2),
-  
-  // the shutter can only have two states, 'open' and 'closed'. 
+
+  // the shutter can only have two states, 'open' and 'closed'.
   // Each of these states is mapped to a range of dmx-values (this
   // is something very common with dmx-devices as these are
   // sometimes still controlled by simple faders with limited
   // precision).
   shutter: new param.MappedParam(1, { open: [9, 16], closed: [0, 8]}),
-  
+
   // finally there is a CMY color-mixing unit controlled via three
   // channels.
   color: new param.RgbParam([7, 8, 9], Color.CMY)
 });
-    
-    
+
+
 // setting a basic light-scene:
 device.brightness = 1; // full brightness
 device.shutter = 'open'; // open the shutter
@@ -149,5 +149,5 @@ device.pan = 0; // pan: center-position
 device.tilt = 45; // tilt by 45°
 device.color = '#ff0000'; // red color
 ```
-    
+
 
