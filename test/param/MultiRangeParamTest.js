@@ -125,5 +125,30 @@ describe('MultiRangeParam', () => {
       _getChannelValueStub.withArgs(13).returns(123);
       expect(param.getValue(device)).to.eql('dmx(123)');
     });
+
+    it('handles ranges with mapping-functions', () => {
+      const param = new MultiRangeParam(11, {
+        fn: {
+          range: [100, 200],
+          toDmx(value) { return 100 + value * 2; },
+          toValue(dmxValue) { return (dmxValue - 100) / 2; }
+        }
+      });
+
+      param.setValue(device, 'fn(10)');
+      expect(_setChannelValueSpy.firstCall.args).to.eql([11, 120]);
+
+      // clamping to specified range
+      _setChannelValueSpy.reset();
+      param.setValue(device, 'fn(100)');
+      expect(_setChannelValueSpy.firstCall.args).to.eql([11, 200]);
+
+      _setChannelValueSpy.reset();
+      param.setValue(device, 'fn(-100)');
+      expect(_setChannelValueSpy.firstCall.args).to.eql([11, 100]);
+
+      _getChannelValueStub.withArgs(11).returns(150);
+      expect(param.getValue(device)).to.eql('fn(25)');
+    });
   });
 });
