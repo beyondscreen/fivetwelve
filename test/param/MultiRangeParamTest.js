@@ -111,7 +111,7 @@ describe('MultiRangeParam', () => {
 
         param.setValue(device, 50);
         expect(_setChannelValueSpy.firstCall.args).to.eql([42, 150]);
-      })
+      });
     });
   });
 });
