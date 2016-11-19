@@ -1,0 +1,98 @@
+import sinon from 'sinon';
+import expect from 'expect.js';
+
+import DmxDevice from '../../lib/device/DmxDevice.js';
+import DmxParam from '../../lib/param/DmxParam.js';
+import MultiRangeParam from '../../lib/param/MultiRangeParam.js';
+
+describe('MultiRangeParam', () => {
+  let device, _getChannelValueStub, _setChannelValueSpy;
+
+  function initTestParam(channel, options) {
+    return new MultiRangeParam(channel, options);
+  }
+
+  beforeEach(() => {
+    device = sinon.createStubInstance(DmxDevice);
+    _setChannelValueSpy = device.setChannelValue = sinon.spy();
+    _getChannelValueStub = device.getChannelValue = sinon.stub();
+  });
+
+
+  describe('constructor()', () => {
+    it('can be initialized', () => {
+      let param = new MultiRangeParam(device, 1, {});
+
+      expect(param).to.be.an(DmxParam);
+    });
+  });
+
+  describe('getter/setter normal operation', () => {
+    let param;
+
+    beforeEach(() => {
+      param = initTestParam(12, {
+        closed: {range: [0,6]},
+        open: {range: [7,13]},
+        strobe: {range: [14,100], values: [0, 1]},
+        random: {range: [101, 201], values: [0, 1]},
+        something: {range: [202, 222], values: [0, 40]}
+      });
+    });
+
+
+    describe('setValue()', () => {
+      it('handles keyword-arguments', () => {
+        _setChannelValueSpy.reset();
+
+        param.setValue(device, 'closed');
+        expect(_setChannelValueSpy.callCount).to.be(1);
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 0]);
+
+        _setChannelValueSpy.reset();
+
+        param.setValue(device, 'open');
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 7]);
+      });
+
+      it('handles function-arguments', () => {
+        param.setValue(device, 'strobe(0)');
+        expect(_setChannelValueSpy.callCount).to.be(1);
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 14]);
+
+        _setChannelValueSpy.reset();
+
+        param.setValue(device, 'random(0.5)');
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 151]);
+      });
+
+      it('handles rounding', () => {
+        param.setValue(device, 'something(1)'); // value 202.5
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 203]);
+      });
+
+      it('handles number-formats', () => {
+        param.setValue(device, 'something(1.6)');
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 203]);
+
+        _setChannelValueSpy.reset();
+
+        param.setValue(device, 'something(.01)');
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 202]);
+      });
+    });
+
+    describe('getValue()', () => {
+      it('retrieves values from dmx-channel', () => {
+        _getChannelValueStub.withArgs(12).returns(0);
+        expect(param.getValue(device)).to.be('closed');
+
+        _getChannelValueStub.reset();
+
+        _getChannelValueStub.withArgs(12).returns(151);
+        expect(param.getValue(device)).to.be('random(0.5)');
+        expect(param.getValue(device)).to.be('random(0.5)');
+      });
+    });
+  });
+});
