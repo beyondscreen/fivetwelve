@@ -14,7 +14,7 @@
     "node": ">= 0.10.x"
   },
   "scripts": {
-    "test": "mocha --compilers js:babel/register test/*/*Test.js && eslint src test",
+    "test": "mocha --compilers js:babel/register test/*/*Test.js && eslint lib test",
     "compile": "babel -d lib-es5 lib",
     "prepublish": "npm run test && npm run compile"
   },
