@@ -95,4 +95,23 @@ describe('MultiRangeParam', () => {
       });
     });
   });
+
+  describe('default-range', () => {
+    describe('setValue()', () => {
+      it('handles default-ranges', () => {
+        const param = new MultiRangeParam(42, {
+          something: {range: [0, 100], values: [0, 100]},
+          default: {range: [100, 200], values: [0, 100]}
+        });
+
+        param.setValue(device, 'default(50)');
+        expect(_setChannelValueSpy.firstCall.args).to.eql([42, 150]);
+
+        _setChannelValueSpy.reset();
+
+        param.setValue(device, 50);
+        expect(_setChannelValueSpy.firstCall.args).to.eql([42, 150]);
+      })
+    });
+  });
 });
