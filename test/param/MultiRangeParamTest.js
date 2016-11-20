@@ -82,6 +82,14 @@ describe('MultiRangeParam', () => {
       it('handles empty values', () => {
         param.setValue(device, '');
         expect(_setChannelValueSpy.firstCall.args).to.eql([12, 0]);
+
+        _setChannelValueSpy.reset();
+        const p2 = new MultiRangeParam(32, {
+          default: {range: [0, 255], values: [-1, 1]}
+        });
+
+        p2.setValue(device, '');
+        expect(_setChannelValueSpy.firstCall.args).to.eql([32, 128]);
       });
     });
 
