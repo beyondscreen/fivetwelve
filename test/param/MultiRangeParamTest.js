@@ -43,8 +43,6 @@ describe('MultiRangeParam', () => {
 
     describe('setValue()', () => {
       it('handles keyword-arguments', () => {
-        _setChannelValueSpy.reset();
-
         param.setValue(device, 'closed');
         expect(_setChannelValueSpy.callCount).to.be(1);
         expect(_setChannelValueSpy.firstCall.args).to.eql([12, 0]);
@@ -79,6 +77,11 @@ describe('MultiRangeParam', () => {
 
         param.setValue(device, 'something(.01)');
         expect(_setChannelValueSpy.firstCall.args).to.eql([12, 202]);
+      });
+
+      it('handles empty values', () => {
+        param.setValue(device, '');
+        expect(_setChannelValueSpy.firstCall.args).to.eql([12, 0]);
       });
     });
 
