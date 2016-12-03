@@ -1,6 +1,6 @@
 {
   "name": "fivetwelve",
-  "version": "0.9.3",
+  "version": "1.0.0-dev",
   "description": "dmx512 lighting control library",
   "keywords": [
     "dmx",
@@ -39,6 +39,7 @@
     "eslint": "^1.2.1",
     "expect.js": "^0.3.1",
     "mocha": "^2.2.5",
+    "promise-polyfill": "^6.0.2",
     "sinon": "^1.15.4"
   }
 }
