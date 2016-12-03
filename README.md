@@ -8,7 +8,7 @@ The fivetwelve library provides abstractions in Javascript to control profession
 > NOTE: I have been using this library successfully in 
 > [several][youtube-jsconfeu] [different][youtube-jsconfbp] 
 > [talks][youtube-jsconfasia] I gave and I am doing my best to 
-> provide a good documentation for it. However, expect for the unit-tests, 
+> provide a good documentation for it. However, except for the unit-tests, 
 > I am not doing a lot of testing on different platforms or in different 
 > usage scenarios. So, if you want to use this and something in this 
 > documentation seems unclear or something doesn't work, please feel 
