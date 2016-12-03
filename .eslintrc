@@ -144,7 +144,7 @@
     "no-ternary": 0,
     "no-trailing-spaces": 2,
     "no-underscore-dangle": 0,
-    "no-extra-parens": 2,
+    "no-extra-parens": 0,
     "one-var": 0,
     "operator-assignment": 0,
     "padded-blocks": [1, "never"],
