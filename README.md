@@ -4,14 +4,13 @@
 
 The fivetwelve library provides abstractions in Javascript to control professional light-equipment via the DMX512-protocol.
 
-
-> NOTE: I have been using this library successfully in 
-> [several][youtube-jsconfeu] [different][youtube-jsconfbp] 
-> [talks][youtube-jsconfasia] I gave and I am doing my best to 
-> provide a good documentation for it. However, except for the unit-tests, 
-> I am not doing a lot of testing on different platforms or in different 
-> usage scenarios. So, if you want to use this and something in this 
-> documentation seems unclear or something doesn't work, please feel 
+> NOTE: I have been using this library successfully in
+> [several][youtube-jsconfeu] [different][youtube-jsconfbp]
+> [talks][youtube-jsconfasia] I gave and I am doing my best to
+> provide a good documentation for it. However, except for the unit-tests,
+> I am not doing a lot of testing on different platforms or in different
+> usage scenarios. So, if you want to use this and something in this
+> documentation seems unclear or something doesn't work, please feel
 > invited to [write an issue][issues] with any question you might have.
 
 [youtube-jsconfeu]: https://www.youtube.com/watch?v=ani_MOZt5_c
@@ -27,7 +26,7 @@ Typical DMX-Setups will contain a single sender (the light desk) and any number 
 
 Since modern automated lights typically use quite a lot of channels for every device, todays larger theatre-setups mostly use multiple DMX-universes to be able to control them all.
 
-In even larger installations, other protocols like [ArtNET][wikipedia-ArtNET] come into play. But those protocols are just a way to transport huge amounts of DMX-Data over a network. The lights themselves are in most cases only controllable using DMX.
+In even larger installations, other protocols like [ArtNET][wikipedia-ArtNET] come into play. But those protocols are just a way to transport huge amounts of DMX-Data over a network. But only very few devices support ArtNET directly, most of them are only controllable using DMX.
 
 [wikipedia-DMX]: https://en.wikipedia.org/wiki/DMX512
 [wikipedia-ArtNET]: https://en.wikipedia.org/wiki/Art-Net
@@ -55,7 +54,7 @@ import ArtNetDriver from 'fivetwelve-driver-artnet';
 // ...
 ```
 
-*(please note that, if you are using babel, you will additionally need to whitelist the module using babels ignore-setting. Using `ignore: /node_modules\/(?!fivetwelve)/` worked for me).*
+*(please note that, depending on your compiler-setup (browserify/babel for instance), you might need to whitelist the module using babels ignore-setting. Using `ignore: /node_modules\/(?!fivetwelve)/` worked for me).*
 
 Alternatively you can use the compiled ES5-Version that comes with this package by appending `/es5` to the module-names:
 
@@ -69,31 +68,31 @@ var ArtNetDriver = require('fivetwelve-driver-artnet/es5');
 For the rest of the documentation ES6-Syntax is assumed.
 
 
-## Usage
+# Usage
 
-### API-Overview
+## API-Overview
 
 This package defines a set of classes that provide the basic functionality to easily control large-scale light-installations
 
- * `DmxOutput`: owns the data-buffers for all dmx-universes, manages 
+ * `DmxOutput`: owns the data-buffers for all dmx-universes, manages
    frame-timing for dmx-data and communication with the driver.
  * `DmxDevice`: provides a simple API to manipulate light-fixtures.
  * `DeviceGroup`: a collection of `DmxDevice` instances that exposes
      an interface identical to that of the contained devices.
- * `param.*`: the different `DmxParam`-classes handle the conversion 
+ * `param.*`: the different `DmxParam`-classes handle the conversion
      between the logical-values used by your program and the corresponding
      DMX-values on the wire.
 
 
-### DmxOutput
+## DmxOutput
 
-The `DMXOutput` is the final destination for all dmx-data. It creates and manages the dmx-buffers for all used dmx-universes and takes care of the communication with the dmx-interface. Usually there should only be a single output-instance in an application. Every `DMXDevice` needs to be connected to this output-instance.
+The `DMXOutput` is the final destination for all dmx-data. It creates and holds the dmx-buffers (a 512 byte `Buffer` per universe) for all dmx-universes and takes care of the communication with the dmx-interface via a Driver. Usually there should only be a single output-instance in an application. Every `DMXDevice` needs to be connected to this output-instance.
 
 When creating an output-instance you need to specify the number of universes (defaults to 1) and a driver to use.
 
-#### initialize the output / automatic timing
+### initialize the output / automatic timing
 
-The default export of the library is a function that will call the DmxOutput-constructor, so the normal setup will look something like this: 
+The default export of the library is a function that will call the DmxOutput-constructor, so the normal setup will look something like this:
 
 ```javascript
 import fivetwelve from 'fivetwelve';
@@ -110,7 +109,7 @@ output.start(1000 / 30);
 
 Initialized this way, the output will automatically send dmx-frames at a fixed rate of 30 FPS and any modification of the dmx-buffers will be sent automatically with the next frame.
 
-#### requestDmxFrame
+### requestDmxFrame
 
 In order to keep pace with sending of the dmx-frames, the output provides a method `requestDmxFrame()` which works pretty much like `requestAnimationFrame()` used for animations on websites. The callback passed to `requestDmxFrame` will be invoked immediately before the next dmx data-frame is sent:
 
@@ -130,7 +129,7 @@ output.start(1000/30);
 ```
 
 
-#### sending frames manually 
+### sending frames manually
 
 As an alternative, you can decide to handle the timing yourself. In this case you need to call `output.send()` to send the current dmx-buffer to the driver:
 
@@ -145,7 +144,7 @@ output.send();
 ```
 
 
-#### support for multiple universes
+### support for multiple universes
 
 If you want to control multiple DMX-universes with a single output, you can specify the number of universes to the initializer:
 
@@ -153,14 +152,14 @@ If you want to control multiple DMX-universes with a single output, you can spec
 // create an output with two universes
 const output = fivetwelve(driver, 2);
 
-// access the buffers (note the universe-number is 1-based, as all 
+// access the buffers (note the universe-number is 1-based, as all
 // numbers  in the DMX standard are)
 const universeA = output.getBuffer(1);
 const universeB = output.getBuffer(2);
 ```
 
 
-### DmxDevice
+## DmxDevice
 
 A DmxDevice represents a single lighting fixture in your setup. Devices are defined by specifying a device-address and a list of parameters. For example, a simple lamp that supports RGB color-mixing and brightness-control might be defined like this:
 
@@ -190,7 +189,9 @@ In this case we define a device at address 1 with two parameters using four dmx-
 All DMX channel-numbers and adresses are 1-based, so channel 1 of a device with address 1 will set the first overall channel of the DMX-universe. This was chosen to reflect how you'll see it in all manuals and settings of real-world devices.
 
 
-### Parameters
+## DeviceGroups
+
+## Parameters
 
 The parameters are the backbone of the whole library, although they are intended to remain invisible most of the time. They convert values between the DMX-format and a logical format to be used by your programs.
 
