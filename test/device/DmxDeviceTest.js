@@ -24,14 +24,14 @@ describe('DmxDevice', () => {
 
   describe('constructor()', () => {
     it('can be initialized', () => {
-      let device = new DmxDevice(1, dmxBuffer);
+      let device = new DmxDevice({address: 1});
       expect(device).to.be.a(DmxDevice);
     });
 
 
     it('binds parameters as properties to the instance', () => {
       let param = createStubParam(),
-        device = new DmxDevice(1, {param});
+        device = new DmxDevice({address: 1, params: {param}});
 
       device.param = 42;
       expect(param.setValue.callCount).to.be(1);
@@ -43,7 +43,7 @@ describe('DmxDevice', () => {
 
     it('binds grouped params as properties', () => {
       let param = createStubParam(),
-        device = new DmxDevice(1, {group: {param}});
+        device = new DmxDevice({address: 1, params: {group: {param}}});
 
       device.group.param = 123;
       expect(param.setValue.firstCall.args[1]).to.eql(123);
@@ -63,7 +63,7 @@ describe('DmxDevice', () => {
     });
 
     it('correctly sets the dmx output-buffer', () => {
-      let device = new DmxDevice(1);
+      let device = new DmxDevice({address: 1});
 
       device.setOutput(output);
       device.setChannelValue(1, 100);
@@ -73,7 +73,7 @@ describe('DmxDevice', () => {
 
   describe('setDmxBuffer()', () => {
     it('get/setChannelValue handle a missing buffer and ignore calls', () => {
-      let device = new DmxDevice(1);
+      let device = new DmxDevice({address: 1});
 
       device.setChannelValue(1, 100);
       expect(device.getChannelValue(1)).to.be(0);
@@ -87,12 +87,12 @@ describe('DmxDevice', () => {
 
   describe('setChannelValue()', () => {
     it('calculates the correct channel-index', () => {
-      let device = new DmxDevice(1);
+      let device = new DmxDevice({address: 1});
       device.setDmxBuffer(dmxBuffer);
       device.setChannelValue(1, 0xff);
       expect(dmxBuffer[0]).to.be(0xff);
 
-      device = new DmxDevice(35, dmxBuffer);
+      device = new DmxDevice({address: 35});
       device.setDmxBuffer(dmxBuffer);
       device.setChannelValue(10, 0xac);
       // dmx-base 35, channel 10 -> dmx-channel 44 -> index 43
@@ -101,7 +101,7 @@ describe('DmxDevice', () => {
 
 
     it('throws an error if no channel is specified', () => {
-      let device = new DmxDevice(1, dmxBuffer);
+      let device = new DmxDevice({address: 1});
 
       expect(device.setChannelValue.bind(device))
           .withArgs().to.throwException();
@@ -110,12 +110,12 @@ describe('DmxDevice', () => {
 
   describe('getChannelValue()', () => {
     it('calculates the correct channel-index', () => {
-      let device = new DmxDevice(1);
+      let device = new DmxDevice({address: 1});
       device.setDmxBuffer(dmxBuffer);
       dmxBuffer[0] = 0xde;
       expect(device.getChannelValue(1)).to.be(0xde);
 
-      device = new DmxDevice(35, dmxBuffer);
+      device = new DmxDevice({address: 35});
       device.setDmxBuffer(dmxBuffer);
       dmxBuffer[35] = 0x12;
       expect(device.getChannelValue(2)).to.be(0x12);
@@ -123,7 +123,7 @@ describe('DmxDevice', () => {
 
 
     it('throws an error if no channel is specified', () => {
-      let device = new DmxDevice(1);
+      let device = new DmxDevice({address: 1});
 
       expect(device.getChannelValue.bind(device))
         .withArgs().to.throwException();
@@ -134,7 +134,7 @@ describe('DmxDevice', () => {
     it('writes values to params', () => {
       let p1 = createStubParam(),
         p2 = createStubParam(),
-        device = new DmxDevice(12, {p1, p2});
+        device = new DmxDevice({address: 12, params: {p1, p2}});
 
       device.setParams({p1: 123, p2: 212});
 
@@ -146,7 +146,7 @@ describe('DmxDevice', () => {
 
     it('only sets values for known params', () => {
       let p1 = createStubParam(),
-        device = new DmxDevice(12, {p1});
+        device = new DmxDevice({address: 12, params: {p1}});
 
       device.setParams({p1: 123, p2: 212});
 
@@ -159,7 +159,7 @@ describe('DmxDevice', () => {
     it('reads values for all parameters', () => {
       let p1 = createStubParam(),
         p2 = createStubParam(),
-        device = new DmxDevice(11, {p1, p2});
+        device = new DmxDevice({address: 11, params: {p1, p2}});
 
       p1.getValue.returns(123);
       p2.getValue.returns(211);

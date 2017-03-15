@@ -44,11 +44,14 @@ describe('DeviceGroup', () => {
     });
 
     it('correctly sets the dmx output-buffer', () => {
-      let devices = [new DmxDevice(1), new DmxDevice(10)],
-        g = new DeviceGroup(devices);
+      const devices = [
+        new DmxDevice({address: 1}),
+        new DmxDevice({address: 10})
+      ];
+      const group = new DeviceGroup(devices);
 
-      g.setOutput(output);
-      g.setChannelValue(1, 100);
+      group.setOutput(output);
+      group.setChannelValue(1, 100);
 
       expect(buffer[0]).to.be(100);
       expect(buffer[9]).to.be(100);
