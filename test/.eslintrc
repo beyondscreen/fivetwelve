@@ -3,6 +3,7 @@
     "max-len": 0,
     "no-unused-vars": 0,
     "brace-style": 0,
-    "require-jsdoc": 0
+    "require-jsdoc": 0,
+    "max-statements": 0
   }
 }
