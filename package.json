@@ -16,7 +16,9 @@
   "scripts": {
     "test": "mocha --compilers js:babel/register test/*/*Test.js && eslint lib test",
     "compile": "babel -d lib-es5 lib",
-    "prepublish": "npm run test && npm run compile"
+    "prepublish": "npm run test && npm run compile",
+    "preversion": "npm test",
+    "postversion": "git push && git push --tags"
   },
   "author": "Martin Schuhfuss <m.schuhfuss@gmail.com>",
   "license": "GPL-3.0",
