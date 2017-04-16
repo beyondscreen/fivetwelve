@@ -42,6 +42,9 @@ describe('DMXOutput', () => {
     it('will start sending frames with the given framerate', () => {
       let out = new DmxOutput(driver);
 
+      // initialize universe
+      out.initUniverse(0);
+
       // test calls when running
       out.start(1000 / 10);
       clock.tick(1000);
@@ -82,6 +85,7 @@ describe('DMXOutput', () => {
       };
 
       let out = new DmxOutput(driver);
+      out.initUniverse(0);
       out.start(1000 / 10);
 
       expect(driver.spy.callCount).to.be(0);
@@ -138,8 +142,15 @@ describe('DMXOutput', () => {
       it('calls send for every registered universe', () => {
         let out = new DmxOutput(multiDriver, 2);
 
+        // driver not called unless universe were initialized
         out.send();
+        expect(multiDriver.spies[0].callCount).to.be(0);
+        expect(multiDriver.spies[1].callCount).to.be(0);
 
+        // initialize universes and try again
+        out.getBuffer(1);
+        out.getBuffer(2);
+        out.send();
         expect(multiDriver.spies[0].callCount).to.be(1);
         expect(multiDriver.spies[1].callCount).to.be(1);
         expect(multiDriver.spies[0].args[0][0]).to.be(out.getBuffer(1));
