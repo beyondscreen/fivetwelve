@@ -33,6 +33,7 @@
   "dependencies": {
     "array.from": "^0.2.0",
     "color-convert": "^0.6.0",
+    "debug": "^2.6.8",
     "object-assign": "^4.0.1",
     "parse-color": "^1.0.0"
   },
